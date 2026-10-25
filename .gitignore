@@ -1,0 +1,28 @@
+blur/blur
+grayscaler/grayscaler
+grayscaler/grayscaler_cpu
+vector/vector
+*/images/
+
+# Executables
+*.exe
+*.out
+*.o
+*.obj
+
+# CUDA and Cpp artifacts
+*.exp
+*.lib
+*.i
+*.ii
+
+#Images
+*.tga
+
+# IDE/System stuff
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
