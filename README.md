@@ -12,6 +12,7 @@ This is a work in progress. I am going through the book in order.
 | `grayscaler/` | `grayscaler.cu` | RGB to grayscale on the GPU, one thread per pixel | Multidimensional grids and data |
 | `grayscaler/` | `grayscaler_cpu.cpp` | The same conversion on the CPU, with per-stage timing | Baseline for the GPU version |
 | `blur/` | `blur.cu` | Box blur on the GPU (3x3 window by default) | Multidimensional grids and data |
+| `matrix/` | `matrixmult.cu` | Square matrix multiplication on the GPU | Matrix Multiplication 
 
 ## Requirements
 
@@ -57,6 +58,30 @@ The blur window is set by the `BLUR_SIZE` constant in `blur.cu`. A value of `n` 
 
 The `-fopenmp` flag in the CPU build is optional. Without it the conversion runs on one core.
 
+**Matrix multiplication**
+
+```bash
+cd matrixmul
+nvcc -O3 matrixmul.cu -o matrixmul
+
+./matrixmul
+```
+
+Or pipe inputs directly:
+
+```bash
+echo "3
+1.0 2.9 1 2 3 2 7 8 9
+9.0 2 3 9 8 7 4 9 6" | ./matrixmul
+```
+
+The program calculates \(P = M \times N\) for square matrices of dimensions \(n \times n\), using a one-thread-per-element grid mapping.
+
+**Input format:**
+
+1. Matrix dimension \(n\)
+2. \(n^2\) values for matrix \(M\), in row-major order
+3. \(n^2\) values for matrix \(N\), in row-major order
 
 ## Credits
 
