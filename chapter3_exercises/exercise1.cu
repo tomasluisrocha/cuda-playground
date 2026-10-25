@@ -5,7 +5,7 @@
 constexpr int THREADS_PER_BLOCK = 256;
 
 // A
-__global__ void matrixMultRowKernel(float *M, float *N, float *P, int width)
+__global__ void matrixMultRowKernel(float *M, float *N, float *P, size_t width)
 {
     int row = blockDim.x * blockIdx.x + threadIdx.x;
 
@@ -23,11 +23,10 @@ __global__ void matrixMultRowKernel(float *M, float *N, float *P, int width)
     }
 }
 
-void matrixMultRow(const std::vector<float> &M_h, const std::vector<float> &N_h, std::vector<float> &P_h, int width)
+void matrixMultRow(const std::vector<float> &M_h, const std::vector<float> &N_h, std::vector<float> &P_h, size_t width)
 {
     dim3 dimBlock(THREADS_PER_BLOCK);
-    dim3 dimGrid(ceil((float)width / dimBlock.x));
-
+    dim3 dimGrid((width + dimBlock.x - 1) / dimBlock.x);
     size_t matSize = width * width;
     float *M_d, *N_d, *P_d;
 
@@ -48,7 +47,7 @@ void matrixMultRow(const std::vector<float> &M_h, const std::vector<float> &N_h,
 }
 
 // B
-__global__ void matrixMultColKernel(float *M, float *N, float *P, int width)
+__global__ void matrixMultColKernel(float *M, float *N, float *P, size_t width)
 {
     int col = blockDim.x * blockIdx.x + threadIdx.x;
 
@@ -66,11 +65,10 @@ __global__ void matrixMultColKernel(float *M, float *N, float *P, int width)
     }
 }
 
-void matrixMultCol(const std::vector<float> &M_h, const std::vector<float> &N_h, std::vector<float> &P_h, int width)
+void matrixMultCol(const std::vector<float> &M_h, const std::vector<float> &N_h, std::vector<float> &P_h, size_t width)
 {
     dim3 dimBlock(THREADS_PER_BLOCK);
-    dim3 dimGrid(ceil((float)width / dimBlock.x));
-
+    dim3 dimGrid((width + dimBlock.x - 1) / dimBlock.x);
     size_t matSize = width * width;
     float *M_d, *N_d, *P_d;
 
